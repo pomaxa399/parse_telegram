@@ -2,23 +2,24 @@ import os
 import json
 import csv
 import gspread
+from tqdm import tqdm
 
-gs = gspread.service_account(filename='gsheets.json')  # подключаем файл с ключами и пр.
-sh = gs.open_by_key('14QrehUZfY9SkQwl85OjX-l2l8Avt6o6QWh4kowKqboI')  # подключаем таблицу по ID
-worksheet = sh.worksheet('Лист 2')  # получаем первый лист
+# gs = gspread.service_account(filename='gsheets.json')  # подключаем файл с ключами и пр.
+# sh = gs.open_by_key('14QrehUZfY9SkQwl85OjX-l2l8Avt6o6QWh4kowKqboI')  # подключаем таблицу по ID
+# worksheet = sh.worksheet('Лист 2')  # получаем первый лист
 
 # Считываем все файлы json в папке result и объединяем данные в один список
 file_path = 'encoded'
 prepared_data = []
-for file_name in os.listdir(file_path):
+for file_name in tqdm(os.listdir(file_path), desc='Собираем файлы из папки'):
     if file_name.endswith('.json'):
-        print(file_name)
+
         with open(os.path.join(file_path, file_name), 'r', encoding='utf-8') as f:
             data = json.load(f)
             prepared_data.extend(data)
-print(prepared_data)
+
 # Обработка данных для записи в гугл таблицу
-for data_item in prepared_data:
+for data_item in tqdm(prepared_data, desc='Подготавливаем данные'):
     # Добавляем недостающие поля, если они отсутствуют
     if 'url' not in data_item:
         data_item['url'] = ''
@@ -47,7 +48,7 @@ for data_item in prepared_data:
 with open('data.csv', mode='w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['url', 'date', 'content', 'outlinks', 'image_url', 'video_preview', 'video_link', 'views'])
-    for row in prepared_data:
+    for row in tqdm(prepared_data, desc='Записываем данные в файл data.csv'):
         writer.writerow([row['url'], row['date'], row['content'], row['outlinks'], row['image_url'], row['video_preview'], row['video_link'], row['views']])
 
 
