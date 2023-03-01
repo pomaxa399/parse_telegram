@@ -28,16 +28,8 @@ for data_item in prepared_data:
         data_item['image_url'] = ''
     if 'views' not in data_item:
         data_item['views'] = ''
-    # if 'description' not in data_item:
-    #     data_item['description'] = ''
-    # if 'siteName' not in data_item:
-    #     data_item['siteName'] = ''
-    # if 'title' not in data_item:
-    #     data_item['title'] = ''
     if 'video_preview' not in data_item:
         data_item['video_preview'] = ''
-    # if 'linkPreview' not in data_item:
-    #     data_item['linkPreview'] = ''
     if 'video_link' not in data_item:
         data_item['video_link'] = ''
     if 'outlinks' in data_item:
