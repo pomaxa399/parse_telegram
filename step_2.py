@@ -34,8 +34,11 @@ def fix_content(encoded_files):
                 if content is not None:
                     content = re.sub(r'<[^>]+>', '', content)
                     content = content.replace('\n', ' ').strip()
+                    content = re.sub(r"[^\w\s]+", "", content)
                     content = ' '.join(content.split())
                     item['content'] = content
+                if item.get('linkpreview') and not item.get('image_url'):
+                    item['image_url'] = item['linkpreview']
 
         with open(file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)

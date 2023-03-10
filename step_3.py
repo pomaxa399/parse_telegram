@@ -21,22 +21,23 @@ for file_name in tqdm(os.listdir(file_path), desc='Собираем файлы �
 # Обработка данных для записи в гугл таблицу
 for data_item in tqdm(prepared_data, desc='Подготавливаем данные'):
     # Добавляем недостающие поля, если они отсутствуют
-    if 'url' not in data_item:
-        data_item['url'] = ''
-    if 'content' not in data_item:
-        data_item['content'] = ''
-    if 'image_url' not in data_item:
-        data_item['image_url'] = ''
-    if 'views' not in data_item:
-        data_item['views'] = ''
-    if 'video_preview' not in data_item:
-        data_item['video_preview'] = ''
-    if 'video_link' not in data_item:
-        data_item['video_link'] = ''
-    if 'outlinks' in data_item:
-        data_item['outlinks'] = ", ".join(data_item['outlinks'])
-    else:
-        data_item['outlinks'] = ''
+    # if 'title' not in data_item:
+    #     data_item['title'] = ''
+    # if 'chat_id_or_url' not in data_item:
+    #     data_item['chat_id_or_url'] = ''
+    if 'post_id' not in data_item:
+        data_item['post_id'] = ''
+    # if 'date' not in data_item:
+    #     data_item['date'] = ''
+    # if 'content' not in data_item:
+    #     data_item['content'] = ''
+    # if 'image_url' not in data_item:
+    #     data_item['image_url'] = ''
+    # if 'video_preview' in data_item:
+    #     data_item['video_preview'] = ''
+    # if 'views' in data_item:
+    #     data_item['views'] = ''
+    
 
     # Преобразуем дату в нужный формат
     date_str = data_item['date'][:10]
@@ -47,9 +48,9 @@ for data_item in tqdm(prepared_data, desc='Подготавливаем данн
 
 with open('data.csv', mode='w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(['url', 'date', 'content', 'outlinks', 'image_url', 'video_preview', 'video_link', 'views'])
+    writer.writerow(['title', 'chat_id_or_url','post_id', 'date', 'content', 'image_url', 'video_preview', 'views'])
     for row in tqdm(prepared_data, desc='Записываем данные в файл data.csv'):
-        writer.writerow([row['url'], row['date'], row['content'], row['outlinks'], row['image_url'], row['video_preview'], row['video_link'], row['views']])
+        writer.writerow([row['title'], row['chat_id_or_url'], row['post_id'], row['date'], row['content'], row['image_url'], row['video_preview'], row['views']])
 
 
 # Запись данных в таблицу
